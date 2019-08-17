@@ -12,19 +12,19 @@ HomePage = Frame(root)  # frames
 LoginPage = Frame(root)
 RegisterPage = Frame(root)
 CategoryPage = Frame(root)
-
+AlimentsPage = Frame(root)
 
 def raise_frame(frame):
     frame.tkraise()
 
 
-for frame in(HomePage, LoginPage, RegisterPage, CategoryPage):
+for frame in(HomePage, LoginPage, RegisterPage, CategoryPage, AlimentsPage):
     frame.grid(row=0, column=0, sticky='news')
 
 # HOME PAGE
-Label(HomePage, text='', bg='green', width=30).grid(row=0, column=0, pady=50)
-Label(HomePage, text='Accueil', width=40).grid(row=0, column=1, pady=50)
-Label(HomePage, text='', bg='red', width=30).grid(row=0, column=2, pady=50)
+Label(HomePage, text='', bg='green', width=30).grid(row=0, column=0, pady=4)
+Label(HomePage, text='Accueil', width=40).grid(row=0, column=1, pady=4)
+Label(HomePage, text='', bg='red', width=30).grid(row=0, column=2, pady=4)
 
 Button(HomePage, text="Créer un compte", command=lambda: raise_frame(RegisterPage)).grid(row=1, column=1, pady=5)
 Button(HomePage, text="M'authentifier", command=lambda: raise_frame(LoginPage)).grid(row=2, column=1, pady=5)
@@ -77,7 +77,7 @@ Button(LoginPage, text="Quitter", command=lambda: quitt_app()).grid(row=7, colum
 #CATEGORIES PAGE
 Label(CategoryPage, text='', width=25, bg='green').grid(row=0, column=0, pady=5)
 
-Label(CategoryPage, text='CATEGORIES', width=40).grid(row=0, column=1, pady=5)
+Label(CategoryPage, text='    CATEGORIES  ', width=40).grid(row=0, column=1, pady=5)
 Label(CategoryPage, text='', width=25, bg='red').grid(row=0, column=2, pady=5)
 
 Label(CategoryPage,
@@ -87,7 +87,7 @@ choiceNumber = StringVar()
 Entry(CategoryPage, textvariable=choiceNumber, width=4).grid(row=2, column=1, pady=15)
 LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
 
-Button(CategoryPage, text='VALIDER', command=lambda: check_number(choiceNumber.get())).grid(row=3, column=1, pady=5)
+Button(CategoryPage, text='VALIDER', command=lambda: raise_frame(AlimentsPage)).grid(row=3, column=1, pady=5)
 
 Label(CategoryPage, text="   1\nBoissons sans alcool", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
@@ -113,6 +113,50 @@ Label(CategoryPage, text="    9\nBonbons", borderwidth=2,
 Button(CategoryPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
 Button(CategoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=21,
                                                                     column=1)
+
+
+
+
+# ALIMENTS PAGE
+Label(AlimentsPage, text='', width=35, bg='green').grid(row=0, column=0, pady=5)
+
+Label(AlimentsPage, text='ALIMENTS', width=30).grid(row=0, column=1, pady=5)
+Label(AlimentsPage, text='', width=35, bg='red').grid(row=0, column=2, pady=5)
+
+Label(AlimentsPage,
+      text="Choisissez un aliments dans la liste :").grid(row=1, column=1, pady=30)
+
+alimentNumber = StringVar()
+Entry(AlimentsPage, textvariable=alimentNumber, width=4).grid(row=2, column=1, pady=15)
+Label(AlimentsPage, text="   1\nPizza", borderwidth=2,
+      relief="groove", width=30, height=2).grid(row=3, column=1, pady=15)
+
+Button(AlimentsPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
+Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=21,
+                                                                    column=1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def check_register_info(username, psswd, confirm):
