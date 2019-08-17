@@ -55,15 +55,15 @@ def is_valid_login(username, psswd):
             c.close()
             conn.close()
             if result == None:
-                messagebox.showinfo('No account yet?','Please register')
+                messagebox.showinfo('Pas inscrit?','Enreigstrez vous pour utiliser\n          l\'application')
             else:
                 check = sha256_crypt.verify(psswd, result[2])
                 if check == True:
                     return True
                 else:
-                    messagebox.showwarning('Invalid', 'Wrong password, try again..')
+                    messagebox.showwarning('Incorrect', 'Mauvais mot de passe')
     else:
-        messagebox.showwarning('Invalid', 'Watch out! Empty field??')
+        messagebox.showwarning('Attention', 'Tous les champs doivent être remplis')
 
 
 def insert_register_infos(username, psswd):

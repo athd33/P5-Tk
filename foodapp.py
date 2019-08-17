@@ -23,7 +23,7 @@ for frame in(HomePage, LoginPage, RegisterPage, CategoryPage):
 
 # HOME PAGE
 Label(HomePage, text='', bg='green', width=30).grid(row=0, column=0, pady=50)
-Label(HomePage, text='Accueil', bg='blue', width=40).grid(row=0, column=1, pady=50)
+Label(HomePage, text='Accueil', width=40).grid(row=0, column=1, pady=50)
 Label(HomePage, text='', bg='red', width=30).grid(row=0, column=2, pady=50)
 
 Button(HomePage, text="Créer un compte", command=lambda: raise_frame(RegisterPage)).grid(row=1, column=1, pady=5)
@@ -77,7 +77,7 @@ Button(LoginPage, text="Quitter", command=lambda: quitt_app()).grid(row=7, colum
 #CATEGORIES PAGE
 Label(CategoryPage, text='', width=25, bg='green').grid(row=0, column=0, pady=5)
 
-Label(CategoryPage, text='CATEGORIES', bg='grey', width=40).grid(row=0, column=1, pady=5)
+Label(CategoryPage, text='CATEGORIES', width=40).grid(row=0, column=1, pady=5)
 Label(CategoryPage, text='', width=25, bg='red').grid(row=0, column=2, pady=5)
 
 Label(CategoryPage,
@@ -89,25 +89,25 @@ LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
 
 Button(CategoryPage, text='VALIDER', command=lambda: check_number(choiceNumber.get())).grid(row=3, column=1, pady=5)
 
-Label(CategoryPage, text="Boissons sans alcool", borderwidth=2,
+Label(CategoryPage, text="   1\nBoissons sans alcool", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
-Label(CategoryPage, text="Boissons alcoolisées", borderwidth=2,
+Label(CategoryPage, text="    2\nBoissons alcoolisées", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=1, pady=15)
-Label(CategoryPage, text="Juts de fruits", borderwidth=2,
+Label(CategoryPage, text="    3\nJuts de fruits", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=2, pady=15)
 
-Label(CategoryPage, text="A tartiner", borderwidth=2,
+Label(CategoryPage, text="    4\nA tartiner", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=0, pady=15)
-Label(CategoryPage, text="Desserts", borderwidth=2,
+Label(CategoryPage, text="   5\nDesserts", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=1, pady=15)
-Label(CategoryPage, text="Fruit juices", borderwidth=2,
+Label(CategoryPage, text="    6\nFruit juices", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=2, pady=15)
 
-Label(CategoryPage, text="Viandes", borderwidth=2,
+Label(CategoryPage, text="   7\nViandes", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=6, column=0, pady=15)
-Label(CategoryPage, text="Biscuits apéritifs", borderwidth=2,
+Label(CategoryPage, text="  8\nBiscuits apéritifs", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=6, column=1, pady=15)
-Label(CategoryPage, text="Bonbons", borderwidth=2,
+Label(CategoryPage, text="    9\nBonbons", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=6, column=2, pady=15)
 
 Button(CategoryPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
