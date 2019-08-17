@@ -79,35 +79,35 @@ Button(LoginPage, text="Quit", command=lambda: quitt_app()).grid(row=7, column=1
 Label(CategoryPage, text='', width=25).grid(row=0, column=0, pady=5)
 
 Label(CategoryPage, text='CATEGORIES', bg='grey', width=40).grid(row=0, column=1, pady=5)
-Label(CategoryPage, text='', width=30).grid(row=0, column=2, pady=5)
+Label(CategoryPage, text='', width=25).grid(row=0, column=2, pady=5)
 
-Label(CategoryPage, text="Please choose a category by entering the referent number :").grid(row=1, column=1, pady=30)
+Label(CategoryPage,
+      text="Please choose a category by entering the referent number :").grid(row=1, column=1, pady=30)
 Entry(CategoryPage, textvariable=psswdLogin, width=4).grid(row=2, column=1, pady=15)
 LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
 
 Button(CategoryPage, text='VALID').grid(row=3, column=1, pady=5)
 
-Label(CategoryPage, text="1 : Boissons sans alcool", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=4, column=0, pady=15)
-Label(CategoryPage, text="2 : Boissons alcoolisées", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=4, column=1, pady=15)
-Label(CategoryPage, text="3 : Juts de fruits", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=4, column=2, pady=15)
+Label(CategoryPage, text="Boissons sans alcool", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
+Label(CategoryPage, text="Boissons alcoolisées", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=4, column=1, pady=15)
+Label(CategoryPage, text="Juts de fruits", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=4, column=2, pady=15)
 
-Label(CategoryPage, text="4 : A tartiner", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=5, column=0, pady=15)
-Label(CategoryPage, text="5 : Desserts", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=5, column=1, pady=15)
-Label(CategoryPage, text="6 : Fruit juices", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=5, column=2, pady=15)
+Label(CategoryPage, text="A tartiner", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=5, column=0, pady=15)
+Label(CategoryPage, text="Desserts", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=5, column=1, pady=15)
+Label(CategoryPage, text="Fruit juices", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=5, column=2, pady=15)
 
-Label(CategoryPage, text="7 : Viandes", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=6, column=0, pady=15)
-Label(CategoryPage, text="8 : Biscuits apéritifs", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=6, column=1, pady=15)
-Label(CategoryPage, text="9 : Bonbons", borderwidth=2,
-      relief="groove", width=15, height=2).grid(row=6, column=2, pady=15)
-
+Label(CategoryPage, text="Viandes", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=6, column=0, pady=15)
+Label(CategoryPage, text="Biscuits apéritifs", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=6, column=1, pady=15)
+Label(CategoryPage, text="Bonbons", borderwidth=2,
+      relief="groove", width=20, height=2).grid(row=6, column=2, pady=15)
 
 Button(CategoryPage, text="Home", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
 Button(CategoryPage, text="Quit", command=lambda: quitt_app()).grid(row=21,
