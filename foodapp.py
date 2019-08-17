@@ -1,6 +1,6 @@
 from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame
 
-from functions import quitt_app, is_valid_register, insert_register_infos, is_valid_login
+from functions import quitt_app, is_valid_register, insert_register_infos, is_valid_login, is_valid_number
 import sys 
 
 
@@ -83,10 +83,12 @@ Label(CategoryPage, text='', width=25).grid(row=0, column=2, pady=5)
 
 Label(CategoryPage,
       text="Please choose a category by entering the referent number :").grid(row=1, column=1, pady=30)
-Entry(CategoryPage, textvariable=psswdLogin, width=4).grid(row=2, column=1, pady=15)
+
+choiceNumber = StringVar()
+Entry(CategoryPage, textvariable=choiceNumber, width=4).grid(row=2, column=1, pady=15)
 LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
 
-Button(CategoryPage, text='VALID').grid(row=3, column=1, pady=5)
+Button(CategoryPage, text='VALID', command=lambda: check_number(choiceNumber.get())).grid(row=3, column=1, pady=5)
 
 Label(CategoryPage, text="Boissons sans alcool", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
@@ -126,6 +128,12 @@ def check_creds_info(username, psswd):
                 messagebox.showinfo('Wellcome','SUCCESS')
                 raise_frame(CategoryPage)
         
+
+def check_number(number):
+        if is_valid_number(number):
+                print("OK")
+        else:
+                messagebox.showwarning('Wrong entry', 'A number please')
 
 raise_frame(HomePage)
 root.mainloop()

@@ -80,3 +80,10 @@ def insert_register_infos(username, psswd):
     conn.commit()
     c.close()
     
+    
+def is_valid_number(num):
+    try:
+        int(num)
+        return True
+    except ValueError:
+        return False
