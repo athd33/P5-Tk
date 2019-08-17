@@ -1,11 +1,11 @@
-from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar
+from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame
 
 from functions import quitt_app, is_valid_register, insert_register_infos, is_valid_login
 import sys 
 
 
 root=Tk() # main window
-root.geometry("400x400+50+50")
+root.geometry("600x400+50+50")
 root.title("** P5 -- FOOD SEARCH APP -- ")
 root.geometry("800x600+400+300")
 
@@ -23,52 +23,90 @@ for frame in(HomePage, LoginPage, RegisterPage, CategoryPage):
     frame.grid(row=0, column=0, sticky='news')
 
 # HOME PAGE
-Label(HomePage, text='HOME').grid(row=0, column=0, padx=370, pady=50)
-Button(HomePage, text="Register", command=lambda: raise_frame(RegisterPage)).grid(row=1, column=0, pady=5)
-Button(HomePage, text="Login", command=lambda: raise_frame(LoginPage)).grid(row=2, column=0, pady=5)
-Button(HomePage, text="Quit", command=lambda: quitt_app()).grid(row=3, column=0, pady=5)
+Label(HomePage, text='', bg='green', width=30).grid(row=0, column=0, pady=50)
+Label(HomePage, text='HOME', bg='blue', width=40).grid(row=0, column=1, pady=50)
+Label(HomePage, text='', bg='red', width=30).grid(row=0, column=2, pady=50)
+
+Button(HomePage, text="Register", command=lambda: raise_frame(RegisterPage)).grid(row=1, column=1, pady=5)
+Button(HomePage, text="Login", command=lambda: raise_frame(LoginPage)).grid(row=2, column=1, pady=5)
+Button(HomePage, text="Quit", command=lambda: quitt_app()).grid(row=3, column=1, pady=5)
 
 
 #REGISTER PAGE
-Label(RegisterPage, text='REGISTER').grid(row=0, column=0, padx=370, pady=5)
-Label(RegisterPage, text="Enter username").grid(row=1, column=0, pady=2)
+Label(RegisterPage, text='', bg='green', width=30).grid(row=0, column=0, pady=50)
+Label(RegisterPage, text='REGISTER', width=40).grid(row=0, column=1, pady=5)
+Label(RegisterPage, text='', bg='red', width=30).grid(row=0, column=2, pady=50)
+
+Label(RegisterPage, text='', bg='green', width=30).grid(row=1, column=0, pady=5)
+Label(RegisterPage, text="Enter username").grid(row=1, column=1, pady=2)
 username = StringVar()
-Entry(RegisterPage, textvariable=username).grid(row=2, column=0, pady=2)
-Label(RegisterPage, text="Password").grid(row=3, column=0, pady=2)
+Label(RegisterPage, text='', bg='green', width=30).grid(row=1, column=0, pady=5)
+Entry(RegisterPage, textvariable=username).grid(row=2, column=1, pady=2)
+Label(RegisterPage, text="Password").grid(row=3, column=1, pady=2)
 psswd = StringVar()
-Entry(RegisterPage, show="*", textvariable=psswd).grid(row=4, column=0, pady=2)
-Label(RegisterPage, text="Confirm password").grid(row=5, column=0, pady=2)
+Entry(RegisterPage, show="*", textvariable=psswd).grid(row=4, column=1, pady=2)
+Label(RegisterPage, text="Confirm password").grid(row=5, column=1, pady=2)
 confirm = StringVar()
-Entry(RegisterPage, show="*", textvariable=confirm).grid(row=6, column=0, pady=2)
+Label(RegisterPage, text='', width=30).grid(row=1, column=0, pady=5)
+
+Entry(RegisterPage, show="*", textvariable=confirm).grid(row=6, column=1, pady=2)
 Button(RegisterPage, text="SUBMIT", command=lambda: check_register_info(username.get(),
                                                                         psswd.get(),
-                                                                        confirm.get())).grid(row=7, column=0, pady=5)
-Button(RegisterPage, text="Home", command=lambda: raise_frame(HomePage)).grid(row=8, column=0, pady=5)
-Button(RegisterPage, text="Login", command=lambda: raise_frame(LoginPage)).grid(row=9, column=0, pady=5)
-Button(RegisterPage, text="Quit", command=lambda: quitt_app()).grid(row=10, column=0, pady=5)
+                                                                        confirm.get())).grid(row=7, column=1, pady=5)
+Button(RegisterPage, text="Home", command=lambda: raise_frame(HomePage)).grid(row=8, column=1, pady=5)
+Button(RegisterPage, text="Login", command=lambda: raise_frame(LoginPage)).grid(row=9, column=1, pady=5)
+Button(RegisterPage, text="Quit", command=lambda: quitt_app()).grid(row=10, column=1, pady=5)
 
 
 #LOGIN PAGE
-Label(LoginPage, text='LOGIN').grid(row=0, column=0, padx=370, pady=5)
-Label(LoginPage, text="Enter username").grid(row=1, column=0, pady=2)
+Label(LoginPage, text='', bg='green', width=30).grid(row=0, column=0, pady=5)
+
+Label(LoginPage, text='LOGIN', width=40).grid(row=0, column=1, pady=5)
+Label(LoginPage, text='', bg='red', width=30).grid(row=0, column=2, pady=5)
+
+Label(LoginPage, text="Enter username").grid(row=1, column=1, pady=2)
 nameLogin = StringVar()
-Entry(LoginPage, textvariable=nameLogin).grid(row=2, column=0, pady=2)
-Label(LoginPage, text="Enter password").grid(row=3, column=0, pady=2)
+Entry(LoginPage, textvariable=nameLogin).grid(row=2, column=1, pady=2)
+Label(LoginPage, text="Enter password").grid(row=3, column=1, pady=2)
 psswdLogin = StringVar()
-Entry(LoginPage, show="*", textvariable=psswdLogin).grid(row=4, column=0, pady=2)
-Button(LoginPage, text="Submit", command=lambda: check_creds_info(nameLogin.get(), psswdLogin.get())).grid(row=5, column=0, pady=5)
-Button(LoginPage, text="Home", command=lambda: raise_frame(HomePage)).grid(row=6, column=0, pady=5)
-Button(LoginPage, text="Quit", command=lambda: quitt_app()).grid(row=7, column=0, pady=5)
+Entry(LoginPage, show="*", textvariable=psswdLogin).grid(row=4, column=1, pady=2)
+Button(LoginPage, text="Submit", command=lambda: check_creds_info(nameLogin.get(), psswdLogin.get())).grid(row=5, column=1, pady=5)
+Button(LoginPage, text="Home", command=lambda: raise_frame(HomePage)).grid(row=6, column=1, pady=5)
+Button(LoginPage, text="Quit", command=lambda: quitt_app()).grid(row=7, column=1, pady=5)
 
 
 #CATEGORIES PAGE
-Label(CategoryPage, text='CATEGORIES', bg='grey').grid(row=0, column=1, padx=250, pady=20)
-Label(CategoryPage, text="Please choose a category by entering the referent number :").grid(row=1, column=1, pady=30)
-Entry(CategoryPage, textvariable=psswdLogin).grid(row=2, column=1, pady=15)
+Label(CategoryPage, text='', width=25).grid(row=0, column=0, pady=5)
 
-Label(CategoryPage, text="1 : Soft drinks").grid(row=3, column=0)
-Label(CategoryPage, text="2 : Alcool drinks").grid(row=3, column=1)
-Label(CategoryPage, text="2 : Fruit juices").grid(row=3, column=2)
+Label(CategoryPage, text='CATEGORIES', bg='grey', width=40).grid(row=0, column=1, pady=5)
+Label(CategoryPage, text='', width=30).grid(row=0, column=2, pady=5)
+
+Label(CategoryPage, text="Please choose a category by entering the referent number :").grid(row=1, column=1, pady=30)
+Entry(CategoryPage, textvariable=psswdLogin, width=4).grid(row=2, column=1, pady=15)
+LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
+
+Button(CategoryPage, text='VALID').grid(row=3, column=1, pady=5)
+
+Label(CategoryPage, text="1 : Boissons sans alcool", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=4, column=0, pady=15)
+Label(CategoryPage, text="2 : Boissons alcoolisées", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=4, column=1, pady=15)
+Label(CategoryPage, text="3 : Juts de fruits", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=4, column=2, pady=15)
+
+Label(CategoryPage, text="4 : A tartiner", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=5, column=0, pady=15)
+Label(CategoryPage, text="5 : Desserts", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=5, column=1, pady=15)
+Label(CategoryPage, text="6 : Fruit juices", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=5, column=2, pady=15)
+
+Label(CategoryPage, text="7 : Viandes", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=6, column=0, pady=15)
+Label(CategoryPage, text="8 : Biscuits apéritifs", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=6, column=1, pady=15)
+Label(CategoryPage, text="9 : Bonbons", borderwidth=2,
+      relief="groove", width=15, height=2).grid(row=6, column=2, pady=15)
 
 
 Button(CategoryPage, text="Home", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
