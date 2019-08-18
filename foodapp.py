@@ -143,22 +143,6 @@ Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=21,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def check_register_info(username, psswd, confirm):
     if is_valid_register(username, psswd, confirm):
         insert_register_infos(username, psswd)
