@@ -1,5 +1,6 @@
-from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame
-
+from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame, Text
+from appclasses import User
+import requests
 from functions import quitt_app, is_valid_register, insert_register_infos, is_valid_login, is_valid_number
 import sys 
 
@@ -87,16 +88,17 @@ choiceNumber = StringVar()
 Entry(CategoryPage, textvariable=choiceNumber, width=4).grid(row=2, column=1, pady=15)
 LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
 
-Button(CategoryPage, text='VALIDER', command=lambda: raise_frame(AlimentsPage)).grid(row=3, column=1, pady=5)
+Button(CategoryPage, text='VALIDER', command=lambda: [raise_frame(AlimentsPage),
+                                                      get_test()]).grid(row=3, column=1, pady=5)
 
-Label(CategoryPage, text="   1\nBoissons sans alcool", borderwidth=2,
+Label(CategoryPage, text="   1\n  PIZZAS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
-Label(CategoryPage, text="    2\nBoissons alcoolisées", borderwidth=2,
+Label(CategoryPage, text="   2\n    YAOURT", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=1, pady=15)
-Label(CategoryPage, text="    3\nJuts de fruits", borderwidth=2,
+Label(CategoryPage, text="    3\n    BISCUITS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=2, pady=15)
 
-Label(CategoryPage, text="    4\nA tartiner", borderwidth=2,
+Label(CategoryPage, text="    4\n    PATES", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=0, pady=15)
 Label(CategoryPage, text="   5\nDesserts", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=1, pady=15)
@@ -123,21 +125,16 @@ Label(AlimentsPage, text='', width=35, bg='green').grid(row=0, column=0, pady=5)
 Label(AlimentsPage, text='ALIMENTS', width=30).grid(row=0, column=1, pady=5)
 Label(AlimentsPage, text='', width=35, bg='red').grid(row=0, column=2, pady=5)
 
-Label(AlimentsPage,
-      text="Choisissez un aliments dans la liste :").grid(row=1, column=1, pady=30)
+Label(AlimentsPage, text='Veuillez sélectionner un \naliment dans la liste suivante:').grid(row=1, column=0)
 
-alimentNumber = StringVar()
-Entry(AlimentsPage, textvariable=alimentNumber, width=4).grid(row=2, column=1, pady=15)
-Label(AlimentsPage, text="   1\nPizza", borderwidth=2,
-      relief="groove", width=30, height=2).grid(row=3, column=1, pady=15)
+aliments = StringVar()
+Label(AlimentsPage, width=20, height=20, textvariable=aliments, bg="white", anchor="nw").grid(row=1, column=1)
 
-Button(AlimentsPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
-Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=21,
-                                                                    column=1)
+Button(AlimentsPage, text="Catégories", command=lambda: raise_frame(CategoryPage)).grid(row=2, column=0, pady=2)
+Button(AlimentsPage, text="Rechercher", command=lambda: raise_frame(CategoryPage)).grid(row=2, column=2, pady=2)
 
-
-
-
+Button(AlimentsPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=2, column=1, pady=2)
+Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=21, column=1, pady=2)
 
 
 
@@ -153,6 +150,7 @@ def check_register_info(username, psswd, confirm):
 def check_creds_info(username, psswd):
         if is_valid_login(username, psswd):
                 messagebox.showinfo('Informations valides', 'Bienvenue')
+                userSession = User(username, psswd)  # instance User object
                 raise_frame(CategoryPage)
         
 
@@ -161,6 +159,15 @@ def check_number(number):
                 print("OK")
         else:
                 messagebox.showwarning('Erreur', '       Attention:\n il faut entrer un chiffre')
+
+
+
+
+
+
+
+
+
 
 raise_frame(HomePage)
 root.mainloop()
