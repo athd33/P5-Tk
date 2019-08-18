@@ -1,4 +1,4 @@
-from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame, Text
+from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame, Text, PhotoImage
 from appclasses import User
 import requests
 from functions import quitt_app, is_valid_register, insert_register_infos, is_valid_login, is_valid_number
@@ -122,8 +122,8 @@ Button(CategoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=21,
 # ALIMENTS PAGE
 Label(AlimentsPage, text='', width=35, bg='green').grid(row=0, column=0, pady=5)
 
-Label(AlimentsPage, text='ALIMENTS', width=30).grid(row=0, column=1, pady=5)
-Label(AlimentsPage, text='', width=35, bg='red').grid(row=0, column=2, pady=5)
+Label(AlimentsPage, text='ALIMENTS', width=30).grid(row=0, column=1)
+Label(AlimentsPage, text='', width=35, bg='red').grid(row=0, column=2)
 
 Label(AlimentsPage, text='Veuillez sélectionner un \naliment dans la liste suivante:').grid(row=1, column=0)
 
@@ -143,13 +143,13 @@ Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=21, c
 def check_register_info(username, psswd, confirm):
     if is_valid_register(username, psswd, confirm):
         insert_register_infos(username, psswd)
-        messagebox.showinfo("VALIDE!", "Votre compte est créé!")
+        messagebox.showinfo("VALIDE!", f"{username}, votre compte est créé!")
         raise_frame(CategoryPage)
 
 
 def check_creds_info(username, psswd):
         if is_valid_login(username, psswd):
-                messagebox.showinfo('Informations valides', 'Bienvenue')
+                messagebox.showinfo('Informations valides', f'     Bienvenue  {username}   ')
                 userSession = User(username, psswd)  # instance User object
                 raise_frame(CategoryPage)
         
