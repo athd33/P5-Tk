@@ -27,12 +27,17 @@ def is_valid_register(username, psswd, confirm):
             return True
 
 
-def in_database(username):
+def connect_to_db():
     conn = pymysql.connect(host="localhost",
                                     user="root",
                                     passwd="Antoine",
                                     db="foodappdb")
     c = conn.cursor()
+    return conn, c
+
+
+def in_database(username):
+    conn , c = connect_to_db()
     c.execute('SELECT * FROM users WHERE user_login LIKE \'%' + username + '%\'')
     result = c.fetchone()
     if result == None:
@@ -43,12 +48,8 @@ def in_database(username):
 
 
 def is_valid_login(username, psswd):
-    if username != '' and psswd != '':
-            conn = pymysql.connect(host="localhost",
-                                    user="root",
-                                    passwd="Antoine",
-                                    db="foodappdb")
-            c = conn.cursor()
+    conn , c = connect_to_db()
+    if username != '' and psswd != '':            
             c.execute('SELECT * FROM users WHERE user_login LIKE \'%' + username + '%\'')
             result = c.fetchone()
             conn.commit()
@@ -87,3 +88,5 @@ def is_valid_number(num):
         return True
     except ValueError:
         return False
+
+#def get_aliment_list(num):

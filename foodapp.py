@@ -1,14 +1,15 @@
-from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame, Text, PhotoImage
+from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame, Text, PhotoImage, IntVar
 from appclasses import User
 import requests
 from functions import quitt_app, is_valid_register, insert_register_infos, is_valid_login, is_valid_number
+from requestapi import get_aliment_liste
 import sys 
 
 
 root=Tk() # main window
-root.title("** P5 -- FOOD SEARCH APP -- ")
+root.title("** P5 -- FOOD SEARCH APP -- ** ")
 root.geometry("800x600+300+200")
-
+root.resizable(False, False)
 HomePage = Frame(root)  # frames
 LoginPage = Frame(root)
 RegisterPage = Frame(root)
@@ -17,7 +18,6 @@ AlimentsPage = Frame(root)
 
 def raise_frame(frame):
     frame.tkraise()
-
 
 for frame in(HomePage, LoginPage, RegisterPage, CategoryPage, AlimentsPage):
     frame.grid(row=0, column=0, sticky='news')
@@ -36,7 +36,6 @@ Button(HomePage, text="Quitter", command=lambda: quitt_app()).grid(row=3, column
 Label(RegisterPage, text='', bg='green', width=30).grid(row=0, column=0, pady=50)
 Label(RegisterPage, text='AUTHENTIFICATION', width=40).grid(row=0, column=1, pady=5)
 Label(RegisterPage, text='', bg='red', width=30).grid(row=0, column=2, pady=50)
-
 Label(RegisterPage, text='', bg='green', width=30).grid(row=1, column=0, pady=5)
 Label(RegisterPage, text="Nom d'utilisateur").grid(row=1, column=1, pady=2)
 username = StringVar()
@@ -60,16 +59,18 @@ Button(RegisterPage, text="Quitter", command=lambda: quitt_app()).grid(row=10, c
 
 #LOGIN PAGE
 Label(LoginPage, text='', bg='green', width=30).grid(row=0, column=0, pady=5)
-
 Label(LoginPage, text='AUTHENTIFICATION', width=40).grid(row=0, column=1, pady=5)
 Label(LoginPage, text='', bg='red', width=30).grid(row=0, column=2, pady=5)
-
 Label(LoginPage, text="Votre nom d'utilisateur").grid(row=1, column=1, pady=2)
+
 nameLogin = StringVar()
 Entry(LoginPage, textvariable=nameLogin).grid(row=2, column=1, pady=2)
+
 Label(LoginPage, text="Mot de passe").grid(row=3, column=1, pady=2)
+
 psswdLogin = StringVar()
 Entry(LoginPage, show="*", textvariable=psswdLogin).grid(row=4, column=1, pady=2)
+
 Button(LoginPage, text="Valider", command=lambda: check_creds_info(nameLogin.get(), psswdLogin.get())).grid(row=5, column=1, pady=5)
 Button(LoginPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=6, column=1, pady=5)
 Button(LoginPage, text="Quitter", command=lambda: quitt_app()).grid(row=7, column=1, pady=5)
@@ -77,10 +78,8 @@ Button(LoginPage, text="Quitter", command=lambda: quitt_app()).grid(row=7, colum
 
 #CATEGORIES PAGE
 Label(CategoryPage, text='', width=25, bg='green').grid(row=0, column=0, pady=5)
-
 Label(CategoryPage, text='    CATEGORIES  ', width=40).grid(row=0, column=1, pady=5)
 Label(CategoryPage, text='', width=25, bg='red').grid(row=0, column=2, pady=5)
-
 Label(CategoryPage,
       text="Choisissez une catégorie parmi les propositions suivantes :").grid(row=1, column=1, pady=30)
 
@@ -88,8 +87,7 @@ choiceNumber = StringVar()
 Entry(CategoryPage, textvariable=choiceNumber, width=4).grid(row=2, column=1, pady=15)
 LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
 
-Button(CategoryPage, text='VALIDER', command=lambda: [raise_frame(AlimentsPage),
-                                                      get_test()]).grid(row=3, column=1, pady=5)
+Button(CategoryPage, text='VALIDER', command=lambda: get_aliments(choiceNumber.get())).grid(row=3, column=1, pady=5)
 
 Label(CategoryPage, text="   1\n  PIZZAS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
@@ -97,14 +95,12 @@ Label(CategoryPage, text="   2\n    YAOURT", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=1, pady=15)
 Label(CategoryPage, text="    3\n    BISCUITS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=2, pady=15)
-
 Label(CategoryPage, text="    4\n    PATES", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=0, pady=15)
 Label(CategoryPage, text="   5\nDesserts", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=1, pady=15)
 Label(CategoryPage, text="    6\nFruit juices", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=2, pady=15)
-
 Label(CategoryPage, text="   7\nViandes", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=6, column=0, pady=15)
 Label(CategoryPage, text="  8\nBiscuits apéritifs", borderwidth=2,
@@ -113,31 +109,24 @@ Label(CategoryPage, text="    9\nBonbons", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=6, column=2, pady=15)
 
 Button(CategoryPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
-Button(CategoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=21,
-                                                                    column=1)
+Button(CategoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=21, column=1)
 
 
 
 
 # ALIMENTS PAGE
-Label(AlimentsPage, text='', width=35, bg='green').grid(row=0, column=0, pady=5)
-
-Label(AlimentsPage, text='ALIMENTS', width=30).grid(row=0, column=1)
-Label(AlimentsPage, text='', width=35, bg='red').grid(row=0, column=2)
-
-Label(AlimentsPage, text='Veuillez sélectionner un \naliment dans la liste suivante:').grid(row=1, column=0)
-
-aliments = StringVar()
-Label(AlimentsPage, width=20, height=20, textvariable=aliments, bg="white", anchor="nw").grid(row=1, column=1)
-
-Button(AlimentsPage, text="Catégories", command=lambda: raise_frame(CategoryPage)).grid(row=2, column=0, pady=2)
-Button(AlimentsPage, text="Rechercher", command=lambda: raise_frame(CategoryPage)).grid(row=2, column=2, pady=2)
-
-Button(AlimentsPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=2, column=1, pady=2)
-Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=21, column=1, pady=2)
-
-
-
+Label(AlimentsPage, text='', width=30, bg='green').grid(row=0, column=0, pady=5)
+Label(AlimentsPage, text='ALIMENTS', width=30).grid(row=0, column=1, pady=5)
+Label(AlimentsPage, text='', width=35, bg='red').grid(row=0, column=2, pady=5)
+Label(AlimentsPage, text='Veuillez sélectionner un \naliment dans la liste suivante:').grid(row=1, column=1)
+alimentListe = StringVar()
+Label(AlimentsPage, width=65, height=20, bg="#808080",borderwidth=2, relief="groove", 
+      textvariable=alimentListe, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
+Button(AlimentsPage, text="Valider", command=lambda: raise_frame(CategoryPage)).grid(row=3, column=1, pady=3)
+Entry(AlimentsPage,  width=2, bg="#808080",borderwidth=2, relief="groove" ).grid(row=3, column=2, pady=3)
+Button(AlimentsPage, text="Retour", command=lambda: raise_frame(CategoryPage)).grid(row=4, column=1, pady=2)
+Button(AlimentsPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=5, column=1, pady=2)
+Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
 
 
 def check_register_info(username, psswd, confirm):
@@ -148,25 +137,20 @@ def check_register_info(username, psswd, confirm):
 
 
 def check_creds_info(username, psswd):
-        if is_valid_login(username, psswd):
-                messagebox.showinfo('Informations valides', f'     Bienvenue  {username}   ')
-                userSession = User(username, psswd)  # instance User object
-                raise_frame(CategoryPage)
-        
 
-def check_number(number):
-        if is_valid_number(number):
-                print("OK")
-        else:
-                messagebox.showwarning('Erreur', '       Attention:\n il faut entrer un chiffre')
+    if is_valid_login(username, psswd):
+            messagebox.showinfo('Informations valides', f'     Bienvenue  {username}   ')
+            userSession = User(username, psswd)  # instance User object
+            raise_frame(CategoryPage)
 
-
-
-
-
-
-
-
+def get_aliments(number):
+    if number != 0:
+        try:
+            number = int(number)
+            raise_frame(AlimentsPage)
+            alimentListe.set(get_aliment_liste(number))
+        except:
+            messagebox.showwarning('Erreur', 'La requête a échoué:\nmerci d\'essayer à nouveau')            
 
 
 raise_frame(HomePage)
