@@ -2,7 +2,7 @@ from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, Labe
 from appclasses import User
 import requests
 from functions import quitt_app, is_valid_register, insert_register_infos, is_valid_login, is_valid_number
-from requestapi import get_aliment_liste
+from requestapi import get_aliment_liste, select_alternative, display_products_names
 import sys 
 
 
@@ -15,11 +15,14 @@ LoginPage = Frame(root)
 RegisterPage = Frame(root)
 CategoryPage = Frame(root)
 AlimentsPage = Frame(root)
+AlternativePage = Frame(root)
+products = []
+
 
 def raise_frame(frame):
     frame.tkraise()
 
-for frame in(HomePage, LoginPage, RegisterPage, CategoryPage, AlimentsPage):
+for frame in(HomePage, LoginPage, RegisterPage, CategoryPage, AlimentsPage, AlternativePage):
     frame.grid(row=0, column=0, sticky='news')
 
 # HOME PAGE
@@ -93,7 +96,7 @@ Label(CategoryPage, text="   1\n  PIZZAS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
 Label(CategoryPage, text="   2\n    YAOURT", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=1, pady=15)
-Label(CategoryPage, text="    3\n    BISCUITS", borderwidth=2,
+Label(CategoryPage, text="    3\n    BOISSONS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=2, pady=15)
 Label(CategoryPage, text="    4\n    PATES", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=0, pady=15)
@@ -122,11 +125,35 @@ Label(AlimentsPage, text='Veuillez sélectionner un \naliment dans la liste suiv
 alimentListe = StringVar()
 Label(AlimentsPage, width=65, height=20, bg="#808080",borderwidth=2, relief="groove", 
       textvariable=alimentListe, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
-Button(AlimentsPage, text="Valider", command=lambda: raise_frame(CategoryPage)).grid(row=3, column=1, pady=3)
-Entry(AlimentsPage,  width=2, bg="#808080",borderwidth=2, relief="groove" ).grid(row=3, column=2, pady=3)
+
+alimentNumber = StringVar()
+Entry(AlimentsPage,  width=2, bg="#808080",borderwidth=2, textvariable=alimentNumber, relief="groove" ).grid(row=3, column=2, pady=3)
+Button(AlimentsPage, text="Valider", command=lambda: get_alternative(alimentNumber.get(), products)).grid(row=3, column=1, pady=3)
+
 Button(AlimentsPage, text="Retour", command=lambda: raise_frame(CategoryPage)).grid(row=4, column=1, pady=2)
 Button(AlimentsPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=5, column=1, pady=2)
 Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
+
+
+
+
+
+# ALTERNATIVE PAGE
+Label(AlternativePage, text='', width=30, bg='green').grid(row=0, column=0, pady=5)
+Label(AlternativePage, text='ALTERNATIVE', width=30).grid(row=0, column=1, pady=5)
+Label(AlternativePage, text='', width=35, bg='red').grid(row=0, column=2, pady=5)
+Label(AlternativePage, text='Voici une alternative \n   qui pourrait vous intéresser:').grid(row=1, column=1)
+alternativeAliment = StringVar()
+Label(AlternativePage, width=90, height=20, bg="#808080",borderwidth=2, relief="groove", 
+      textvariable=alternativeAliment, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
+
+
+Button(AlternativePage, text="Enregistrer").grid(row=3, column=1, pady=3)
+
+Button(AlternativePage, text="Retour", command=lambda: raise_frame(CategoryPage)).grid(row=4, column=1, pady=2)
+Button(AlternativePage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=5, column=1, pady=2)
+Button(AlternativePage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
+
 
 
 def check_register_info(username, psswd, confirm):
@@ -144,13 +171,28 @@ def check_creds_info(username, psswd):
             raise_frame(CategoryPage)
 
 def get_aliments(number):
+    global products
+    cat = int(number)
     if number != 0:
         try:
             number = int(number)
             raise_frame(AlimentsPage)
-            alimentListe.set(get_aliment_liste(number))
+            products = get_aliment_liste(number)
+            alimentListe.set(display_products_names(products))
         except:
             messagebox.showwarning('Erreur', 'La requête a échoué:\nmerci d\'essayer à nouveau')            
+
+
+def get_alternative(number, products):
+    number = int(number)
+    number -= 1
+    raise_frame(AlternativePage)
+    alternativeAliment.set(select_alternative(products[number]))
+    
+
+
+
+
 
 
 raise_frame(HomePage)
