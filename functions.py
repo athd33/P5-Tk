@@ -1,6 +1,7 @@
 import sys
 from tkinter import messagebox
 from passlib.hash import sha256_crypt
+from datetime import datetime
 import pymysql
 
 
@@ -48,8 +49,8 @@ def in_database(username):
 
 
 def is_valid_login(username, psswd):
-    conn , c = connect_to_db()
-    if username != '' and psswd != '':            
+    conn, c = connect_to_db()
+    if username != '' and psswd != '':
             c.execute('SELECT * FROM users WHERE user_login LIKE \'%' + username + '%\'')
             result = c.fetchone()
             conn.commit()
@@ -59,7 +60,7 @@ def is_valid_login(username, psswd):
                 messagebox.showinfo('Pas inscrit?','Enreigstrez vous pour utiliser\n          l\'application')
             else:
                 check = sha256_crypt.verify(psswd, result[2])
-                if check == True:
+                if check:
                     return True
                 else:
                     messagebox.showwarning('Incorrect', 'Mauvais mot de passe')
@@ -75,8 +76,10 @@ def insert_register_infos(username, psswd):
                            db="foodappdb")
     c = conn.cursor()
     hashedPsswd = sha256_crypt.encrypt(psswd)
-    sql = 'INSERT INTO users (user_login, user_password) VALUES (%s,%s)'
-    val = ({username}, {hashedPsswd})
+    now = datetime.now()
+    formatted_date = now.strftime('%Y-%m-%d')
+    sql = 'INSERT INTO users (user_login, user_password, user_date) VALUES (%s,%s,%s)'
+    val = ({username}, {hashedPsswd}, {formatted_date})
     c.execute(sql, val)
     conn.commit()
     c.close()

@@ -35,7 +35,6 @@ def display_products_names(products):
     return list_to_display
 
 
-
 def display_alternative(product):    
     selectedProduct = AlternativeProduct(product)   # instanciation de selectedProduct
     
