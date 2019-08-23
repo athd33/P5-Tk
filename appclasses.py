@@ -4,12 +4,13 @@ class User():
     """
     Class used to handle the user creds
     """
-    def __init__(self, username, psswd):
-        self.username = username
-        self.psswd = psswd
+    def __init__(self, user_login, user_password):
+        self.user_login = user_login
+        self.user_password = user_password
+        
         
 
-class AlternativeProduct():
+class Product():
     """
     Class used to keep the first category selection
     """
@@ -27,8 +28,4 @@ class AlternativeProduct():
         self.code = products['code']
         
 
-
-    def __repr__(self):
-        names = [i for i in self.products['name']]
-        return names
 
