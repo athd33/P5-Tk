@@ -151,28 +151,104 @@ def display_alternative(product):
 
 
 def dump_selection(selection, userSession):    
-    check_values(selection)
+    if not in_db(selection):
+        if in_favorites(selection):
+            messagebox.showinfo('Produit deja favori', "Ce produit figure déjà dans vos favoris")
+        else:
+            insert_product(selection)
+            insert_favorites(selection, userSession)
+    else:
+        messagebox.showwarning('Deja dans la base', "Information deja dans la base de donnees")
+
+
+def insert_product(selection):
     conn , c = connect_to_db()
     now = datetime.now()
     formatted_date = now.strftime('%Y-%m-%d')
-    sql = 'INSERT INTO products (brands, name, nutriscore, url, alergen, stores, other_name, complement, portion, code, date) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+
+    sql = 'INSERT INTO products (brands, name, nutriscore, url, alergen, stores, other_name, complement, portion, code, date)\
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
     val = ({selection.brands},
-           {selection.name},
-           {selection.nutriscore},
-           {selection.url},
-           {selection.alergen},
-           {selection.stores},
-           {selection.other_name},
-           {selection.complement},
-           {selection.portion},
-           {selection.code},
-           {formatted_date})
+        {selection.name},
+        {selection.nutriscore},
+        {selection.url},
+        {selection.alergen},
+        {selection.stores},
+        {selection.other_name},
+        {selection.complement},
+        {selection.portion},
+        {selection.code},
+        {formatted_date})
     c.execute(sql, val)
     conn.commit()
     c.close()
     print('dumped success!')
     return True
+
+def check_values(selection, userSession):
+    userId = get_user_id(userSession.user_login)
+    productId = get_product_id(selection.code)
+
+def insert_favorites(selection, userSession):
+    conn, c = connect_to_db()
+    c.execute('SELECT id FROM products WHERE code LIKE \'%' + selection.code + '%\'')
+    productId = c.fetchone()
+    c.execute('SELECT id FROM users WHERE user_login LIKE \'%' + userSession.user_login + '%\'')
+    userId = c.fetchone()
+    sql = 'INSERT INTO favorites (users_id, products_id) VALUES (%s,%s)'
+    val = ({userId}, {productId})
+    c.execute(sql, val)
+    conn.commit()
+    c.close()
+    print("Favorites inserted")
+    messagebox.showinfo('Enregistré!', "Votre produit a été enregistré")
+
+
+
+def in_favorites(selection):
+    conn, c = connect_to_db()
+    c.execute('SELECT id FROM products WHERE code LIKE \'%' + selection.code + '%\'')
+    productId = c.fetchone()
+    if productId:
+        c.execute('SELECT * FROM favorites WHERE product_id LIKE \'%' + productId + '%\'')
+        favoritId = c.fetchone()
+        if favoritId:
+            if productId == favoritId:
+                return False
+            else:
+                return True
+    else:
+        return False
+    conn.commit()
+    c.close()
+    conn.close()
+
+
+def get_user_id(user_login):
+    conn, c = connect_to_db()
+    c.execute('SELECT id FROM users WHERE user_login LIKE \'%' + user_login + '%\'')
+    userId = c.fetchone()
+    conn.commit()
+    c.close()
+    conn.close()
+    return userId
+
+
+def in_db(selection):
+    conn, c = connect_to_db()
+    c.execute('SELECT id FROM products WHERE code LIKE \'%' + selection.code + '%\'')
+    productId = c.fetchone()
+    if productId:
+        return True
+    else:
+        return False
+    conn.commit()
+    c.close()
+    conn.close()
     
+
+
+
 
 def check_values(selection):
     try:

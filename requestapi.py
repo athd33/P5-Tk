@@ -27,15 +27,12 @@ def select_alternative(product):
         products = result["products"]
         num  = len(products)   
         print(f'nombre de resultat a : {num}')
-        num = int(num)
         if num == 0:
             products = try_request(cat, 'b')
-            num = int(num)                
             num = len(products)
             print(f'nombre de resultat b : {num}')
             if num == 0:
                 products = try_request(cat, 'c')
-                num = int(num)                
                 num = len(products)
                 print(f'nombre de resultat c : {num}')
                 if num == 0:
