@@ -153,7 +153,9 @@ def display_alternative(product):
 def dump_selection(selection, userSession):    
     check_values(selection)
     conn , c = connect_to_db()
-    sql = 'INSERT INTO products (brands, name, nutriscore, url, alergen, stores, other_name, complement, portion, code) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+    now = datetime.now()
+    formatted_date = now.strftime('%Y-%m-%d')
+    sql = 'INSERT INTO products (brands, name, nutriscore, url, alergen, stores, other_name, complement, portion, code, date) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
     val = ({selection.brands},
            {selection.name},
            {selection.nutriscore},
@@ -163,7 +165,8 @@ def dump_selection(selection, userSession):
            {selection.other_name},
            {selection.complement},
            {selection.portion},
-           {selection.code})
+           {selection.code},
+           {formatted_date})
     c.execute(sql, val)
     conn.commit()
     c.close()
