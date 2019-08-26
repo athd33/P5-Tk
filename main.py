@@ -1,13 +1,17 @@
-from tkinter import messagebox, Tk, Frame, Label, Button, Entry, StringVar, LabelFrame, Text, PhotoImage, IntVar
+from tkinter import messagebox, Tk, Frame, Label, Button, Entry
+from tkinter import StringVar, LabelFrame, Text, PhotoImage, IntVar
 from appclasses import User, Product
-from functions import quitt_app, is_valid_register, in_database, insert_register_infos, is_valid_login, display_products_names, is_valid_number, display_alternative, dump_selection
+from functions import quitt_app, is_valid_register, in_database, get_user_id
+from functions import insert_register_infos, is_valid_login, display_history
+from functions import is_valid_number, display_alternative, dump_selection
+from functions import set_default, request_saved, display_products_names
 from requestapi import get_aliment_list, select_alternative
 import requests
 
-import sys 
+import sys
 
 
-root=Tk() # main window
+root = Tk()  # main window
 root.title("** P5 -- FOOD SEARCH APP -- ** ")
 root.geometry("800x600+300+200")
 root.resizable(False, False)
@@ -17,17 +21,17 @@ RegisterPage = Frame(root)
 CategoryPage = Frame(root)
 AlimentsPage = Frame(root)
 AlternativePage = Frame(root)
-HistoricPage = Frame(root)
+HistoryPage = Frame(root)
 products = []
 num = 0
 pro = []
 
 
-
 def raise_frame(frame):
     frame.tkraise()
 
-for frame in(HomePage, LoginPage, RegisterPage, CategoryPage, AlimentsPage, AlternativePage, HistoricPage):
+for frame in(HomePage, LoginPage, RegisterPage,
+             CategoryPage, AlimentsPage, AlternativePage, HistoryPage):
     frame.grid(row=0, column=0, sticky='news')
 
 # HOME PAGE
@@ -109,7 +113,7 @@ Label(CategoryPage, text="    9\nBonbons", borderwidth=2,
 
 Button(CategoryPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
 Button(CategoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=21, column=1)
-Button(CategoryPage, text="Retrouver mes\n aliments substitués", command=lambda: raise_frame(HistoricPage), bg='grey').grid(row=22, column=1, pady=5)
+Button(CategoryPage, text="Retrouver mes\n aliments substitués", command=lambda: get_saved(user), bg='grey').grid(row=22, column=1, pady=5)
 
 
 # ALIMENTS PAGE
@@ -153,14 +157,15 @@ Button(AlternativePage, text="Quitter", command=lambda: quitt_app()).grid(row=6,
 
 
 # HISTORIQUE PAGE
-Label(HistoricPage, text='', width=30, bg='green').grid(row=0, column=0, pady=5)
-Label(HistoricPage, text='RECHERCHES SAUVEGARDEES', width=40).grid(row=0, column=1, pady=5)
-Label(HistoricPage, text='', width=30, bg='red').grid(row=0, column=2, pady=5)
-Label(HistoricPage, text='Voici les recherches enregistrées:').grid(row=1, column=1)
-Label(HistoricPage, width=90, height=20, bg="#808080",borderwidth=2, relief="groove", 
-      textvariable=alternativeAliment, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
-Button(HistoricPage, text="Catégories", command=lambda: raise_frame(CategoryPage)).grid(row=5, column=1, pady=2)
-Button(HistoricPage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
+Label(HistoryPage, text='', width=30, bg='green').grid(row=0, column=0, pady=5)
+Label(HistoryPage, text='RECHERCHES SAUVEGARDEES', width=40).grid(row=0, column=1, pady=5)
+Label(HistoryPage, text='', width=30, bg='red').grid(row=0, column=2, pady=5)
+Label(HistoryPage, text='Voici les recherches enregistrées:').grid(row=1, column=1)
+savedElements = StringVar()
+Label(HistoryPage, width=90, height=20, bg="#808080",borderwidth=2, relief="groove", 
+      textvariable=savedElements, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
+Button(HistoryPage, text="Catégories", command=lambda: raise_frame(CategoryPage)).grid(row=5, column=1, pady=2)
+Button(HistoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
 
 
 
@@ -192,7 +197,8 @@ def get_first_list(number):
         messagebox.showwarning('Erreur de saisie', 'Désolé, il faut un chiffre entre:\n     1 et 9')
     else:
         global categoryList
-        categoryList = get_aliment_list(number)
+        global choice
+        categoryList, choice = get_aliment_list(number)
         raise_frame(AlimentsPage)
         alimentList.set(display_products_names(categoryList))
         
@@ -201,12 +207,14 @@ def get_first_list(number):
 def get_alternative(number, products):
     if is_valid_number(number):
         number = int(number)
-        if number > 0 and number < 21:    
+        if number > 0 and number < 21:
             number -= 1
             raise_frame(AlternativePage)
-            new = select_alternative(products[number])
+            new = select_alternative(choice)
+            if not new:
+                raise_frame(CategoryPage)
             global product
-            product = Product(new)            
+            product = Product(products[number])
             alternativeAliment.set(display_alternative(new))            
         else:
             messagebox.showwarning('Attention', 'Désolé, vous devez choisir dans la liste.')
@@ -217,6 +225,15 @@ def get_alternative(number, products):
 def dump_product(product, user):
     if dump_selection(product, user):
         messagebox.showinfo('Saved!', 'Your data have been saved')
+
+
+
+def get_saved(user):
+    raise_frame(HistoryPage) 
+    id = get_user_id(user.login)   
+    savedProducts = request_saved(user, id)
+    history = display_history(savedProducts)
+    savedElements.set(history)
 
 
 

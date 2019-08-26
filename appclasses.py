@@ -4,11 +4,10 @@ class User():
     """
     Class used to handle the user creds
     """
-    def __init__(self, user_login, user_password):
-        self.user_login = user_login
-        self.user_password = user_password
-        
-        
+    def __init__(self, login, password):
+        self.login = login
+        self.password = password
+
 
 class Product():
     """
@@ -27,6 +26,3 @@ class Product():
         self.portion = products['nutrition_data_prepared_per']
         self.data = products['nutrition_data_prepared_per']
         self.code = products['code']
-        
-
-

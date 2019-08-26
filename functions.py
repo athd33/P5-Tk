@@ -20,12 +20,13 @@ def is_valid_number(num):
 def is_valid_register(username, psswd, confirm):
     '''Check entered values by user'''
     if username == "":
-            messagebox.showinfo("Register failed", "Empty field!")  
+            messagebox.showinfo("Register failed", "Empty field!")
             return False
     else:
         if psswd != confirm:
             messagebox.showinfo("Register failed",
-                                "Passwords are not similar: \n Please try again...")
+                                "Passwords are not \
+                                 similar: \n Please try again...")
             return False
         elif psswd == "":
             messagebox.showinfo("Register failed", "empty field")
@@ -35,10 +36,10 @@ def is_valid_register(username, psswd, confirm):
 
 
 def in_database(username):
-    conn , c = connect_to_db()
-    c.execute('SELECT * FROM users WHERE user_login LIKE \'%' + username + '%\'')
+    conn, c = connect_to_db()
+    c.execute('SELECT * FROM users WHERE login LIKE \'%' + username + '%\'')
     result = c.fetchone()
-    if result == None:
+    if result is None:
         return False
         messagebox.showwarning('Faild', 'No user at this name')
     else:
@@ -47,11 +48,12 @@ def in_database(username):
 
 def connect_to_db():
     conn = pymysql.connect(host="localhost",
-                                    user="root",
-                                    passwd="Antoine",
-                                    db="foodappdb")
+                           user="root",
+                           passwd="Antoine",
+                           db="foodappdb")
     c = conn.cursor()
     return conn, c
+
 
 def insert_register_infos(username, psswd):
     """Method used to check if registered or not"""
@@ -63,7 +65,7 @@ def insert_register_infos(username, psswd):
     hashedPsswd = sha256_crypt.encrypt(psswd)
     now = datetime.now()
     formatted_date = now.strftime('%Y-%m-%d')
-    sql = 'INSERT INTO users (user_login, user_password, user_date) VALUES (%s,%s,%s)'
+    sql = 'INSERT INTO users (login, psswd, date) VALUES (%s,%s,%s)'
     val = ({username}, {hashedPsswd}, {formatted_date})
     c.execute(sql, val)
     conn.commit()
@@ -73,13 +75,17 @@ def insert_register_infos(username, psswd):
 def is_valid_login(username, psswd):
     conn, c = connect_to_db()
     if username != '' and psswd != '':
-            c.execute('SELECT * FROM users WHERE user_login LIKE \'%' + username + '%\'')
+            c.execute('SELECT * \
+                       FROM users \
+                       WHERE login LIKE \'%' + username + '%\'')
             result = c.fetchone()
             conn.commit()
             c.close()
             conn.close()
-            if result == None:
-                messagebox.showinfo('Pas inscrit?','Enreigstrez vous pour utiliser\n          l\'application')
+            if result is None:
+                messagebox.showinfo('Pas inscrit?',
+                                    'Enreigstrez vous pour \
+                                     utiliser\n          l\'application')
             else:
                 check = sha256_crypt.verify(psswd, result[2])
                 if check:
@@ -87,7 +93,8 @@ def is_valid_login(username, psswd):
                 else:
                     messagebox.showwarning('Incorrect', 'Mauvais mot de passe')
     else:
-        messagebox.showwarning('Attention', 'Tous les champs doivent être remplis')
+        messagebox.showwarning('Attention', 'Tous les champs \
+                                doivent être remplis')
 
 
 def display_products_names(products):
@@ -96,104 +103,122 @@ def display_products_names(products):
     for i in products:
         try:
             name = i['product_name_fr']
-        except KeyError:
-            pass
+        except:
+            name = 'Non communiqué'
         if name == '':
             pass
         else:
-            initial_list.append(f'{count}:-> {name}\n')  
-            count += 1 
+            initial_list.append(f'{count}:-> {name}\n')
+            count += 1
             list_to_display = ', '.join(initial_list)
             list_to_display = list_to_display.replace(', ', '')
     return list_to_display
 
 
-
-def display_alternative(product):    
-  
+def display_alternative(product):  
     try:
         marque = f'Distributeur : {product["brands"]}\n'
-    except KeyError:
+    except:
         marque = 'Distributeur : Information non spécifiée\n'
     try:
         name = f'Nom : {product["name"]}\n'
-    except KeyError:
+    except:
         name = 'Nom :  Information non spécifiée\n'
     try:
-        score = f'Nutriscore : {product["brands"]}\n'
-    except KeyError:
-        score = 'Nutriscore: non précisé'
-    url = f'Liens internet : {product["url"]}\n'
+        score = f'Nutriscore : {product["score"]}\n'
+    except:
+        score = 'Nutriscore: non précisé\n'
+    try:
+        url = f'Liens internet : {product["url"]}\n'
+    except:
+        url = f'Information non communiquée'
     try:        
         alergen = f'Allergène(s) : {product["allergens_from_user"]}\n'
-    except KeyError:
+    except:
         alergen = 'Allergènes : Pas de données disponible\n'
-    places = f'Disponible chez : {product["stores"]}\n'
+    try:
+        places = f'Disponible chez : {product["stores"]}\n'
+    except:
+        places = f'Information non communiquée'
     try:
         otherName = f'Autre appellation : {product["generic_name_fr"]}\n'
-    except KeyError:
+    except:
         otherName = 'Autre appellation: Aucune autre appellation mentionnée\n'
     try:
-        complement =f'Composition: {product["ingredients_text"][0:50]}...\n'
-    except KeyError:
-        complement = 'Compoition: Informations non disponibles'
+        complement = f'Composition: {product["ingredients_text"][0:50]}...\n'
+    except:
+        complement = 'Composition: Informations non disponibles\n'
     try:
         portion = f'Portion : {product["nutrition_data_prepared_per"]}\n'
-    except KeyError:
+    except:
         portion = 'Portion: Information non communiquée'
-        
-    code = f'Code produit : {product["code"]}\n'
-      
-    aliment = [name,otherName, marque, places, score, url, alergen , complement, portion, code]
+    try:   
+        code = f'Code produit : {product["code"]}\n'
+    except:
+        code = 'Code non disponible'
+
+    aliment = [name, otherName, marque, places, score, url,
+               alergen, complement, portion, code]
     list_to_display = ', '.join(aliment)
     list_to_display = list_to_display.replace(', ', '')
     return list_to_display
 
 
-def dump_selection(selection, userSession):    
+def dump_selection(selection, userSession):
     if not in_db(selection):
         if in_favorites(selection):
-            messagebox.showinfo('Produit deja favori', "Ce produit figure déjà dans vos favoris")
+            messagebox.showinfo('Produit deja favori',
+                                "Ce produit figure déjà dans vos favoris")
         else:
             insert_product(selection)
             insert_favorites(selection, userSession)
     else:
-        messagebox.showwarning('Deja dans la base', "Information deja dans la base de donnees")
+        messagebox.showwarning('Deja dans la base',
+                               "Information deja dans la base de donnees")
 
 
 def insert_product(selection):
-    conn , c = connect_to_db()
+    conn, c = connect_to_db()
     now = datetime.now()
     formatted_date = now.strftime('%Y-%m-%d')
 
-    sql = 'INSERT INTO products (brands, name, nutriscore, url, alergen, stores, other_name, complement, portion, code, date)\
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+    sql = 'INSERT INTO products (brands, name, nutriscore, url,\
+           alergen, stores, other_name, complement, portion, code, date)\
+           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
     val = ({selection.brands},
-        {selection.name},
-        {selection.nutriscore},
-        {selection.url},
-        {selection.alergen},
-        {selection.stores},
-        {selection.other_name},
-        {selection.complement},
-        {selection.portion},
-        {selection.code},
-        {formatted_date})
+           {selection.name},
+           {selection.nutriscore},
+           {selection.url},
+           {selection.alergen},
+           {selection.stores},
+           {selection.other_name},
+           {selection.complement},
+           {selection.portion},
+           {selection.code},
+           {formatted_date})
     c.execute(sql, val)
     conn.commit()
     c.close()
     print('dumped success!')
     return True
 
+
 def check_values(selection, userSession):
-    userId = get_user_id(userSession.user_login)
+    userId = get_user_id(userSession.login)
     productId = get_product_id(selection.code)
+
 
 def insert_favorites(selection, userSession):
     conn, c = connect_to_db()
-    c.execute('SELECT id FROM products WHERE code LIKE \'%' + selection.code + '%\'')
+    c.execute('SELECT id \
+               FROM products\
+               WHERE code \
+               LIKE \'%' + selection.code + '%\'')
     productId = c.fetchone()
-    c.execute('SELECT id FROM users WHERE user_login LIKE \'%' + userSession.user_login + '%\'')
+    c.execute('SELECT id \
+               FROM users \
+               WHERE login \
+               LIKE \'%' + userSession.login + '%\'')
     userId = c.fetchone()
     sql = 'INSERT INTO favorites (users_id, products_id) VALUES (%s,%s)'
     val = ({userId}, {productId})
@@ -204,13 +229,16 @@ def insert_favorites(selection, userSession):
     messagebox.showinfo('Enregistré!', "Votre produit a été enregistré")
 
 
-
 def in_favorites(selection):
     conn, c = connect_to_db()
-    c.execute('SELECT id FROM products WHERE code LIKE \'%' + selection.code + '%\'')
+    c.execute('SELECT id FROM products \
+               WHERE code \
+               LIKE \'%' + selection.code + '%\'')
     productId = c.fetchone()
     if productId:
-        c.execute('SELECT * FROM favorites WHERE product_id LIKE \'%' + productId + '%\'')
+        c.execute('SELECT * \
+                   FROM favorites \
+                   WHERE product_id LIKE \'%' + productId + '%\'')
         favoritId = c.fetchone()
         if favoritId:
             if productId == favoritId:
@@ -224,9 +252,12 @@ def in_favorites(selection):
     conn.close()
 
 
-def get_user_id(user_login):
+def get_user_id(login):
     conn, c = connect_to_db()
-    c.execute('SELECT id FROM users WHERE user_login LIKE \'%' + user_login + '%\'')
+    c.execute('SELECT id \
+               FROM users \
+               WHERE login \
+               LIKE \'%' + login + '%\'')
     userId = c.fetchone()
     conn.commit()
     c.close()
@@ -236,7 +267,10 @@ def get_user_id(user_login):
 
 def in_db(selection):
     conn, c = connect_to_db()
-    c.execute('SELECT id FROM products WHERE code LIKE \'%' + selection.code + '%\'')
+    c.execute('SELECT id \
+               FROM products \
+               WHERE code \
+               LIKE \'%' + selection.code + '%\'')
     productId = c.fetchone()
     if productId:
         return True
@@ -245,9 +279,6 @@ def in_db(selection):
     conn.commit()
     c.close()
     conn.close()
-    
-
-
 
 
 def check_values(selection):
@@ -263,3 +294,67 @@ def check_values(selection):
         selection.portion
     except AttributeError:
         selection.portion = 'Non communiqué'
+
+
+def set_default(new):
+    print(f"TYPE DE NEW {type(new)}")
+    try:
+        new["brands"]
+    except:
+        new["brands"] = 'Distributeur : Information non spécifiée\n'
+    try:
+        new["name"]
+    except:
+        new["name"] = 'Nom :  Information non spécifiée\n'
+    try:
+        new["score"]
+    except:
+        score = 'Nutriscore: non précisé'
+    try:
+        new["allergens_from_user"]
+    except:
+        new["allergens_from_user"] = 'Allergènes : Pas de données disponible\n'
+    try:
+        new["stores"]
+    except:
+        places = new["stores"]
+    try:
+        new["generic_name_fr"]
+    except:
+        otherName = "Pas d'information supplémentaire"
+    try:
+        new["ingredients_text"]
+    except:
+        new["ingredients_text"] = 'Compoition: Informations non disponibles'
+    try:
+        new["nutrition_data_prepared_per"]
+    except:
+        new["nutrition_data_prepared_per"] = \
+            'Portion: Information non communiquée'
+    return new
+
+
+def request_saved(user, id):
+    id = id[0]
+    i = str(id)
+    conn, c = connect_to_db()
+    c.execute(f'SELECT P.* \
+                FROM products \
+                AS P \
+                LEFT JOIN favorites AS F \
+                ON F.products_id = P.id WHERE F.users_id = {id} ;')
+    saved = c.fetchall()
+    conn.commit()
+    c.close()
+    conn.close()
+    return saved
+
+
+def display_history(saved):
+    elements = []
+    for i in saved:
+        elements.append(i[2])
+        elements.append('\n')
+    toDisplay = ', '.join(elements)
+    toDisplay = toDisplay.replace(', ', '')
+    return toDisplay

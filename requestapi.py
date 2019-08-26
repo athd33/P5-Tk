@@ -6,60 +6,57 @@ from random import *
 
 def get_aliment_list(num):
     num -= 1
-    aliments = ['pizzas', 'yaourts', 'boissons', 'desserts', 'snacks', 'cakes', 'apéritifs', '', '']
-    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={aliments[num]}&page_size=20&process&json=1')
-    responseCode = req.status_code
-    if responseCode != 200:
-        print(f'Error in request, returned code :{responseCode}')
-    else:
-        result = req.json()
-        products = result["products"]        
-        return products
-        
-def select_alternative(product):
-    cat = product['categories']
-    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={cat}&nutrition_grades=a&countries_lc=fr&page_size=20&process&json=1')
+    aliments = ['pizza', 'yaourts', 'burger', 'desserts', 'snacks', 'cakes', 'apéritifs', 'sandwich', 'pain']
+    choice = aliments[num]
+    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={choice}&page_size=20&process&json=1')
     responseCode = req.status_code
     if responseCode != 200:
         print(f'Error in request, returned code :{responseCode}')
     else:
         result = req.json()
         products = result["products"]
-        num  = len(products)   
-        print(f'nombre de resultat a : {num}')
+        return products, choice
+
+
+def select_alternative(choice):
+    print(f'PREMIER CHOICE : {choice}')
+    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={choice}&nutrition_grades=a&page_size=20&process&json=1')
+    responseCode = req.status_code
+    if responseCode != 200:
+        print(f'Error in request, returned code :{responseCode}')
+    else:
+        result = req.json()
+        products = result["products"]
+        num = len(products)
         if num == 0:
-            products = try_request(cat, 'b')
-            num = len(products)
-            print(f'nombre de resultat b : {num}')
+            products = try_request(choice, 'b')
             if num == 0:
-                products = try_request(cat, 'c')
-                num = len(products)
-                print(f'nombre de resultat c : {num}')
+                products = try_request(choice, 'c')
                 if num == 0:
-                    products = try_request(cat, 'd')
-                    num = int(num)                
-                    num = len(products)
-                    print(f'nombre de resultat d : {num}')
+                    products = try_request(choice, 'd')
+                    if num == 0:
+                        messagebox.showinfo('Arf', 'Nous ne trouvons pas d\'alternative,\n essayez avec un autre produit!')
+                        return False
                 else:
                     rNum = randrange(num)
-                    new = products[rNum] 
+                    new = products[rNum]
                     return new
             else:
                 rNum = randrange(num)
-                new = products[rNum] 
+                new = products[rNum]
                 return new
         else:
             rNum = randrange(num)
-            new = products[rNum] 
+            new = products[rNum]
             return new
 
 
-def try_request(cat, letter):       
-    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={cat}&nutrition_grades={letter}&countries_lc=fr&page_size=20&process&json=1')
+def try_request(choice, letter):
+    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={choice}&nutrition_grades={letter}&page_size=20&process&json=1')
     result = req.json()
     products = result["products"]
-    num  = len(products)  
+    num = len(products)
     if num == 0:
-        return num
-    else:         
+        return num, choice
+    else:
         return products
