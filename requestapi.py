@@ -19,7 +19,6 @@ def get_aliment_list(num):
 
 
 def select_alternative(choice):
-    print(f'PREMIER CHOICE : {choice}')
     req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={choice}&nutrition_grades=a&page_size=20&process&json=1')
     responseCode = req.status_code
     if responseCode != 200:

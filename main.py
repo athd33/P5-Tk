@@ -7,7 +7,6 @@ from functions import is_valid_number, display_alternative, dump_selection
 from functions import set_default, request_saved, display_products_names
 from requestapi import get_aliment_list, select_alternative
 import requests
-
 import sys
 
 
@@ -94,21 +93,21 @@ LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
 Button(CategoryPage, text='VALIDER', command=lambda: get_first_list(choiceNumber.get())).grid(row=3, column=1, pady=5)
 Label(CategoryPage, text="   1\n  PIZZAS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
-Label(CategoryPage, text="   2\n    YAOURT", borderwidth=2,
+Label(CategoryPage, text="   2\n    YAOURTS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=1, pady=15)
-Label(CategoryPage, text="    3\n    BOISSONS", borderwidth=2,
+Label(CategoryPage, text="    3\n    BURGERS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=2, pady=15)
-Label(CategoryPage, text="    4\n    PATES", borderwidth=2,
+Label(CategoryPage, text="    4\n    DESSERTS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=0, pady=15)
-Label(CategoryPage, text="   5\nDESSERTS", borderwidth=2,
+Label(CategoryPage, text="   5\nSNACKS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=1, pady=15)
-Label(CategoryPage, text="    6\nGATEAUX", borderwidth=2,
+Label(CategoryPage, text="    6\nCAKES", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=5, column=2, pady=15)
 Label(CategoryPage, text="   7\nAPERITIFS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=6, column=0, pady=15)
-Label(CategoryPage, text="  8\nBiscuits apéritifs", borderwidth=2,
+Label(CategoryPage, text="  8\nSANDWICHS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=6, column=1, pady=15)
-Label(CategoryPage, text="    9\nBonbons", borderwidth=2,
+Label(CategoryPage, text="    9\nPAINS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=6, column=2, pady=15)
 
 Button(CategoryPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
@@ -125,15 +124,10 @@ alimentList = StringVar()
 Label(AlimentsPage, width=65, height=20, bg="#808080",borderwidth=2, relief="groove", 
       textvariable=alimentList, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
 alimentNumber = StringVar()
-Entry(AlimentsPage,  width=2, bg="#808080",borderwidth=2, textvariable=alimentNumber, relief="groove" ).grid(row=3, column=2, pady=3)
-
-
-Button(AlimentsPage, text="Valider", command=lambda: get_alternative(alimentNumber.get(), categoryList)).grid(row=3, column=1, pady=3)
-
-
-
-Button(AlimentsPage, text="Retour", command=lambda: raise_frame(CategoryPage)).grid(row=4, column=1, pady=2)
-Button(AlimentsPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=5, column=1, pady=2)
+Entry(AlimentsPage,  width=2, bg="#808080",borderwidth=2, textvariable=alimentNumber, relief="groove" ).grid(row=3, column=1, pady=3)
+Button(AlimentsPage, text="Valider", command=lambda: get_alternative(alimentNumber.get(), categoryList)).grid(row=4, column=1, pady=3)
+Button(AlimentsPage, text="Retour", command=lambda: raise_frame(CategoryPage)).grid(row=5, column=0, pady=2)
+Button(AlimentsPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=5, column=2, pady=2)
 Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
 
 
@@ -145,12 +139,7 @@ Label(AlternativePage, text='Voici une alternative \n   qui pourrait vous intér
 alternativeAliment = StringVar()
 Label(AlternativePage, width=90, height=20, bg="#808080",borderwidth=2, relief="groove", 
       textvariable=alternativeAliment, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
-
-
 Button(AlternativePage, text="Enregistrer", command=lambda:dump_product(product, user)).grid(row=3, column=1, pady=3)
-
-
-
 Button(AlternativePage, text="Retour", command=lambda: raise_frame(CategoryPage)).grid(row=4, column=1, pady=2)
 Button(AlternativePage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=5, column=1, pady=2)
 Button(AlternativePage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
@@ -165,7 +154,8 @@ savedElements = StringVar()
 Label(HistoryPage, width=90, height=20, bg="#808080",borderwidth=2, relief="groove", 
       textvariable=savedElements, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
 Button(HistoryPage, text="Catégories", command=lambda: raise_frame(CategoryPage)).grid(row=5, column=1, pady=2)
-Button(HistoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
+Button(HistoryPage, text="Aliments", command=lambda: raise_frame(AlimentsPage)).grid(row=6, column=1, pady=2)
+Button(HistoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=7, column=1, pady=2)
 
 
 
@@ -190,18 +180,17 @@ def check_creds_info(username, psswd):
 
 def get_first_list(number):    
     try:
-        number = int(number)
-    except:
-        messagebox.showwarning('Erreur de saisie', 'Désolé, il faut renseigner un chiffre.')
-    if number < 1 and number > 9:
+        number = int(number)    
+        if number < 1 and number > 9:
+            messagebox.showwarning('Erreur de saisie', 'Désolé, il faut un chiffre entre:\n     1 et 9')
+        else:
+            global categoryList
+            global choice
+            categoryList, choice = get_aliment_list(number)
+            raise_frame(AlimentsPage)
+            alimentList.set(display_products_names(categoryList))
+    except:    
         messagebox.showwarning('Erreur de saisie', 'Désolé, il faut un chiffre entre:\n     1 et 9')
-    else:
-        global categoryList
-        global choice
-        categoryList, choice = get_aliment_list(number)
-        raise_frame(AlimentsPage)
-        alimentList.set(display_products_names(categoryList))
-        
 
 
 def get_alternative(number, products):
@@ -214,7 +203,7 @@ def get_alternative(number, products):
             if not new:
                 raise_frame(CategoryPage)
             global product
-            product = Product(products[number])
+            product = Product(new)
             alternativeAliment.set(display_alternative(new))            
         else:
             messagebox.showwarning('Attention', 'Désolé, vous devez choisir dans la liste.')

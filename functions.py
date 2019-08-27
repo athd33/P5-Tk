@@ -121,11 +121,11 @@ def display_alternative(product):
     except:
         marque = 'Distributeur : Information non spécifiée\n'
     try:
-        name = f'Nom : {product["name"]}\n'
+        name = f'Nom : {product["product_name"]}\n'
     except:
         name = 'Nom :  Information non spécifiée\n'
     try:
-        score = f'Nutriscore : {product["score"]}\n'
+        score = f'Nutriscore : {product["nutrition_grades"]}\n'
     except:
         score = 'Nutriscore: non précisé\n'
     try:
@@ -133,13 +133,13 @@ def display_alternative(product):
     except:
         url = f'Information non communiquée'
     try:        
-        alergen = f'Allergène(s) : {product["allergens_from_user"]}\n'
+        alergen = f'Allergène(s) : {product["allergens_from_ingredients"]}\n'
     except:
         alergen = 'Allergènes : Pas de données disponible\n'
     try:
-        places = f'Disponible chez : {product["stores"]}\n'
+        places = f'Magasins : {product["stores"]}\n'
     except:
-        places = f'Information non communiquée'
+        places = f'Magasin : Pas de magasin spécifié'
     try:
         otherName = f'Autre appellation : {product["generic_name_fr"]}\n'
     except:
@@ -199,7 +199,6 @@ def insert_product(selection):
     c.execute(sql, val)
     conn.commit()
     c.close()
-    print('dumped success!')
     return True
 
 
@@ -225,7 +224,6 @@ def insert_favorites(selection, userSession):
     c.execute(sql, val)
     conn.commit()
     c.close()
-    print("Favorites inserted")
     messagebox.showinfo('Enregistré!', "Votre produit a été enregistré")
 
 
