@@ -141,7 +141,7 @@ Label(AlternativePage, width=90, height=20, bg="#808080",borderwidth=2, relief="
       textvariable=alternativeAliment, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
 Button(AlternativePage, text="Enregistrer", command=lambda:dump_product(product, user)).grid(row=3, column=1, pady=3)
 Button(AlternativePage, text="Retour", command=lambda: raise_frame(CategoryPage)).grid(row=4, column=1, pady=2)
-Button(AlternativePage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=5, column=1, pady=2)
+Button(AlternativePage, text="Accueil", command=lambda: raise_frame(CategoryPage)).grid(row=5, column=1, pady=2)
 Button(AlternativePage, text="Quitter", command=lambda: quitt_app()).grid(row=6, column=1, pady=2)
 
 

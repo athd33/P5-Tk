@@ -48,8 +48,8 @@ def in_database(username):
 
 def connect_to_db():
     conn = pymysql.connect(host="localhost",
-                           user="root",
-                           passwd="Antoine",
+                           user="user_foodapp",
+                           passwd="p@ssword",
                            db="foodappdb")
     c = conn.cursor()
     return conn, c
@@ -57,11 +57,7 @@ def connect_to_db():
 
 def insert_register_infos(username, psswd):
     """Method used to check if registered or not"""
-    conn = pymysql.connect(host="localhost",
-                           user="root",
-                           passwd="Antoine",
-                           db="foodappdb")
-    c = conn.cursor()
+    conn, c = connect_to_db()
     hashedPsswd = sha256_crypt.encrypt(psswd)
     now = datetime.now()
     formatted_date = now.strftime('%Y-%m-%d')
