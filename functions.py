@@ -350,7 +350,7 @@ def display_history(saved):
         elements.append(f'Nom : {i[2]}\n')
         elements.append(f'Nutriscore : {i[3]}\n')
         elements.append(f'URL : {i[4]}\n')
-        elements.append(f'Magasin : {i[7]}\n')
+        elements.append(f'Magasin : {i[6]}\n')
         elements.append('----------------------------------------\n')
     toDisplay = ', '.join(elements)
     toDisplay = toDisplay.replace(', ', '')
