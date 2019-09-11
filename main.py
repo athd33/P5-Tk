@@ -58,9 +58,8 @@ Label(RegisterPage, text="Confirmez le mot de passe").grid(row=5, column=1, pady
 confirm = StringVar()
 Label(RegisterPage, text='', width=30).grid(row=1, column=0, pady=5)
 Entry(RegisterPage, show="*", textvariable=confirm).grid(row=6, column=1, pady=2)
-Button(RegisterPage, text="SUBMIT", command=lambda: check_register_info(username.get(),
-                                                                        psswd.get(),
-                                                                        confirm.get())).grid(row=7, column=1, pady=5)
+Button(RegisterPage, text="SUBMIT",
+       command=lambda: check_register_info(username.get(), psswd.get(), confirm.get())).grid(row=7, column=1, pady=5)
 Button(RegisterPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=8, column=1, pady=5)
 Button(RegisterPage, text="Authentification", command=lambda: raise_frame(LoginPage)).grid(row=9, column=1, pady=5)
 Button(RegisterPage, text="Quitter", command=lambda: quitt_app()).grid(row=10, column=1, pady=5)
@@ -112,7 +111,7 @@ Label(CategoryPage, text="    9\nPAINS", borderwidth=2,
 
 Button(CategoryPage, text="Accueil", command=lambda: raise_frame(HomePage)).grid(row=20, column=1,)
 Button(CategoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=21, column=1)
-Button(CategoryPage, text="Retrouver mes\n aliments substitués", command=lambda: get_saved(user), bg='grey').grid(row=22, column=1, pady=5)
+Button(CategoryPage, text="Retrouver mes\n aliments substitués", command=lambda: get_saved(user), bg='#3F7FBF').grid(row=22, column=1, pady=5)
 
 
 # ALIMENTS PAGE
@@ -135,9 +134,10 @@ Button(AlimentsPage, text="Quitter", command=lambda: quitt_app()).grid(row=6, co
 Label(AlternativePage, text='', width=30, bg='green').grid(row=0, column=0, pady=5)
 Label(AlternativePage, text='ALTERNATIVE', width=30).grid(row=0, column=1, pady=5)
 Label(AlternativePage, text='', width=35, bg='red').grid(row=0, column=2, pady=5)
-Label(AlternativePage, text='Voici une alternative \n   qui pourrait vous intéresser:').grid(row=1, column=1)
+Label(AlternativePage, text='Voici une alternative \n   qui\
+                             pourrait vous intéresser:').grid(row=1, column=1)
 alternativeAliment = StringVar()
-Label(AlternativePage, width=90, height=20, bg="#808080",borderwidth=2, relief="groove", 
+Label(AlternativePage, width=90, height=20, bg="#F0F2F4",borderwidth=2, relief="groove", 
       textvariable=alternativeAliment, anchor="nw", justify="left").grid(row=2, column=0, columnspan=3)
 Button(AlternativePage, text="Enregistrer", command=lambda:dump_product(product, user)).grid(row=3, column=1, pady=3)
 Button(AlternativePage, text="Retour", command=lambda: raise_frame(CategoryPage)).grid(row=4, column=1, pady=2)
@@ -158,39 +158,46 @@ Button(HistoryPage, text="Aliments", command=lambda: raise_frame(AlimentsPage)).
 Button(HistoryPage, text="Quitter", command=lambda: quitt_app()).grid(row=7, column=1, pady=2)
 
 
-
-
 def check_register_info(username, psswd, confirm):
-    if is_valid_register(username, psswd, confirm):        
+    if is_valid_register(username, psswd, confirm):
         if in_database(username):
-            messagebox.showinfo("Register failed", "Username allready taken:\nChoose an other please")
+            messagebox.showinfo("Register failed",
+                                "Username allready taken:\nChoose\
+                                 an other please")
         else:
             insert_register_infos(username, psswd)
             global user
             user = User(username, psswd)  # instance User object
-            messagebox.showinfo("VALIDE!", f"{username}, votre compte est créé!")
+            messagebox.showinfo("VALIDE!",
+                                f"{username}, votre compte est créé!")
             raise_frame(CategoryPage)
+
 
 def check_creds_info(username, psswd):
     if is_valid_login(username, psswd):
-            messagebox.showinfo('Informations valides', f'     Bienvenue  {username}   ')
+            messagebox.showinfo('Informations valides',
+                                f'Bienvenue  {username}   ')
             global user
             user = User(username, psswd)  # instance User object
             raise_frame(CategoryPage)
 
-def get_first_list(number):    
+
+def get_first_list(number):
     try:
-        number = int(number)    
+        number = int(number)
         if number < 1 and number > 9:
-            messagebox.showwarning('Erreur de saisie', 'Désolé, il faut un chiffre entre:\n     1 et 9')
+            messagebox.showwarning('Erreur de saisie',
+                                   'Désolé, il faut un chiffre entre:\n \
+                                    1 et 9')
         else:
             global categoryList
             global choice
             categoryList, choice = get_aliment_list(number)
             raise_frame(AlimentsPage)
             alimentList.set(display_products_names(categoryList))
-    except:    
-        messagebox.showwarning('Erreur de saisie', 'Désolé, il faut un chiffre entre:\n     1 et 9')
+    except:
+        messagebox.showwarning('Erreur de saisie', 'Désolé,\
+                                il faut un chiffre entre:\n     1 et 9')
 
 
 def get_alternative(number, products):
@@ -204,11 +211,13 @@ def get_alternative(number, products):
                 raise_frame(CategoryPage)
             global product
             product = Product(new)
-            alternativeAliment.set(display_alternative(new))            
+            alternativeAliment.set(display_alternative(new))
         else:
-            messagebox.showwarning('Attention', 'Désolé, vous devez choisir dans la liste.')
+            messagebox.showwarning('Attention',
+                                   'Désolé, vous devez choisir dans la liste.')
     else:
-        messagebox.showwarning('Erreur de saisie', 'Désolé, il faut renseigner un chiffre.')
+        messagebox.showwarning('Erreur de saisie',
+                               'Désolé, il faut renseigner un chiffre.')
 
 
 def dump_product(product, user):
@@ -216,15 +225,12 @@ def dump_product(product, user):
         messagebox.showinfo('Saved!', 'Your data have been saved')
 
 
-
 def get_saved(user):
-    raise_frame(HistoryPage) 
-    id = get_user_id(user.login)   
+    raise_frame(HistoryPage)
+    id = get_user_id(user.login)
     savedProducts = request_saved(user, id)
     history = display_history(savedProducts)
     savedElements.set(history)
-
-
 
 
 raise_frame(HomePage)

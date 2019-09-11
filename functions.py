@@ -291,7 +291,6 @@ def check_values(selection):
 
 
 def set_default(new):
-    print(f"TYPE DE NEW {type(new)}")
     try:
         new["brands"]
     except:
