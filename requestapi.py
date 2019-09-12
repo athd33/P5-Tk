@@ -6,9 +6,13 @@ from random import *
 
 def get_aliment_list(num):
     num -= 1
-    aliments = ['pizza', 'yaourts', 'burger', 'desserts', 'snacks', 'cakes', 'apéritifs', 'sandwich', 'pain']
+    aliments = ['pizza', 'yaourts', 'burger', 'desserts',
+                'snacks', 'cakes', 'apéritifs', 'sandwich', 'pain']
     choice = aliments[num]
-    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={choice}&page_size=20&process&json=1')
+    req = requests.get(
+        'https://world.openfoodfacts.org'
+        f'/cgi/search.pl?search_terms={choice}'
+        '&page_size=20&process&json=1')
     responseCode = req.status_code
     if responseCode != 200:
         print(f'Error in request, returned code :{responseCode}')
@@ -19,7 +23,12 @@ def get_aliment_list(num):
 
 
 def select_alternative(choice):
-    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={choice}&nutrition_grades=a&page_size=20&process&json=1')
+    req = requests.get(
+        'https://world.openfoodfacts.org/cgi/search.pl?'
+        f'search_terms={choice}'
+        '&nutrition_grades=a'
+        '&page_size=20'
+        '&process&json=1')
     responseCode = req.status_code
     if responseCode != 200:
         print(f'Error in request, returned code :{responseCode}')
@@ -34,7 +43,8 @@ def select_alternative(choice):
                 if num == 0:
                     products = try_request(choice, 'd')
                     if num == 0:
-                        messagebox.showinfo('Arf', 'Nous ne trouvons pas d\'alternative,\n essayez avec un autre produit!')
+                        messagebox.showinfo('Arf', 'Nous ne trouvons pas\
+                            d\'alternative,\n essayez avec un autre produit!')
                         return False
                 else:
                     rNum = randrange(num)
@@ -51,7 +61,12 @@ def select_alternative(choice):
 
 
 def try_request(choice, letter):
-    req = requests.get(f'https://world.openfoodfacts.org/cgi/search.pl?search_terms={choice}&nutrition_grades={letter}&page_size=20&process&json=1')
+    req = requests.get(
+        'https://world.openfoodfacts.org/cgi/'
+        f'search.pl?search_terms={choice}'
+        f'&nutrition_grades={letter}'
+        '&page_size=20'
+        '&process&json=1')
     result = req.json()
     products = result["products"]
     num = len(products)

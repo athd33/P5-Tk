@@ -111,7 +111,7 @@ def display_products_names(products):
     return list_to_display
 
 
-def display_alternative(product):  
+def display_alternative(product):
     try:
         marque = f'Distributeur : {product["brands"]}\n'
     except:
@@ -128,7 +128,7 @@ def display_alternative(product):
         url = f'Liens internet : {product["url"]}\n'
     except:
         url = f'Information non communiquée'
-    try:        
+    try:
         alergen = f'Allergène(s) : {product["allergens_from_ingredients"]}\n'
     except:
         alergen = 'Allergènes : Pas de données disponible\n'
@@ -148,7 +148,7 @@ def display_alternative(product):
         portion = f'Portion : {product["nutrition_data_prepared_per"]}\n'
     except:
         portion = 'Portion: Information non communiquée'
-    try:   
+    try:
         code = f'Code produit : {product["code"]}\n'
     except:
         code = 'Code non disponible'
