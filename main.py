@@ -144,7 +144,9 @@ Entry(CategoryPage,
       textvariable=choiceNumber, width=4).grid(row=2, column=1, pady=15)
 LabelFrame(CategoryPage, text="Catégories", bd=1).grid(padx=10, pady=10)
 Button(CategoryPage,
-       text='VALIDER', command=lambda: get_first_list(choiceNumber.get())).grid(row=3, column=1, pady=5)
+       text='VALIDER',
+       command=lambda:
+       get_first_list(choiceNumber.get())).grid(row=3, column=1, pady=5)
 Label(CategoryPage,
       text="   1\n  PIZZAS", borderwidth=2,
       relief="groove", width=20, height=2).grid(row=4, column=0, pady=15)
