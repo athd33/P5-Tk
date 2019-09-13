@@ -23,7 +23,7 @@ To see your records, go to the category page and click on the dedicated button.
 
 #### Database configuration:
 
-To use this porgramm, you need to have Python3 and MySQL installed. Once done, you need to configure the database. 
+To use this porgramm, you need to have Python3 and MySQL (version 5.7) installed. Once done, you need to configure the database. 
 
 Open MySQL console and enter the following commands:
 
