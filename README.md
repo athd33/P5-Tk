@@ -30,8 +30,13 @@ Open MySQL console and enter the following commands:
 Creat a database called "foodappdb"
 
 ```
-CREATE DATABASE foodappd;
+CREATE DATABASE foodappdb;
 ```
+
+USE the database creation script: 
+
+Copy and past the script_foodappdb script in your mysql.
+
 
 Creat a user:
 

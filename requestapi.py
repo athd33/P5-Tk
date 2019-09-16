@@ -36,6 +36,8 @@ def select_alternative(choice):
         result = req.json()
         products = result["products"]
         num = len(products)
+        rNum = randrange(num)
+        new = products[rNum]
         if num == 0:
             products = try_request(choice, 'b')
             if num == 0:

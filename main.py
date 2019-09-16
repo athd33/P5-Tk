@@ -175,7 +175,7 @@ Button(CategoryPage,
 Button(CategoryPage,
        text="Retrouver mes\n aliments substitués",
        command=lambda:
-       get_saved(user), bg='#3F7FBF').grid(row=22, column=1, pady=5)
+       get_saved(user), bg='white').grid(row=22, column=1, pady=5)
 
 
 # ALIMENTS PAGE
@@ -192,7 +192,7 @@ alimentList = StringVar()
 Label(AlimentsPage,
       width=65,
       height=20,
-      bg="#808080",
+      bg="white",
       borderwidth=2,
       relief="groove",
       textvariable=alimentList,
@@ -201,7 +201,7 @@ Label(AlimentsPage,
 alimentNumber = StringVar()
 Entry(AlimentsPage,
       width=2,
-      bg="#808080",
+      bg="white",
       borderwidth=2,
       textvariable=alimentNumber,
       relief="groove").grid(row=3, column=1, pady=3)
@@ -237,7 +237,7 @@ alternativeAliment = StringVar()
 Label(AlternativePage,
       width=90,
       height=20,
-      bg="#F0F2F4",
+      bg="white",
       borderwidth=2,
       relief="groove",
       textvariable=alternativeAliment,
@@ -273,7 +273,7 @@ savedElements = StringVar()
 Label(HistoryPage,
       width=90,
       height=20,
-      bg="#808080",
+      bg="white",
       borderwidth=2,
       relief="groove",
       textvariable=savedElements,
